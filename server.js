@@ -61,12 +61,12 @@ console.log('credentials', credentials);
 
 // const mysql = require('mysql2'); // or require('mysql2').createConnectionPromise
 const db = mysql.createConnection(credentials).connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
   }
+  console.log('Connected to MySQL xxxxx');
+}
 );
 
 // Init
@@ -74,19 +74,32 @@ const db = mysql.createConnection(credentials).connect(err => {
 const PORT = process.env.PORT || 3306;
 
 
-app.get('/db', async (req, res) => {
-  db.query('SELECT * FROM users', (err, results) => {
-    if (err) {
-      console.error('Error executing query: ' + err.stack);
-      res.status(500).send('Error fetching users');
-      return;
+// app.get('/db', async (req, res) => {
+
+//   db.query('SELECT * FROM users', (err, results) => {
+//     if (err) {
+//       console.error('Error executing query: ' + err.stack);
+//       res.status(500).send('Error fetching users');
+//       return;
+//     }
+//     console.log("results", results);
+//     res.json(results);
+//   });  
+// });
+
+app.get('/db', (req, res) => {
+
+  // Fetch users from the database
+  connection.query('SELECT * FROM users', (error, results) => {
+    if (error) {
+      console.error('Error fetching users from the database: ' + error.stack);
+      return res.status(500).json({ error: 'Failed to fetch users' });
     }
-    console.log("results", results);
+    console.log("results >>>>> ", results);
     res.json(results);
-  });  
+
+  });
 });
-
-
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
