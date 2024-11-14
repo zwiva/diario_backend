@@ -73,6 +73,7 @@ const db = mysql.createConnection(credentials).connect(err => {
 // const PORT = process.env.PORT || APP_PORT;
 const PORT = process.env.PORT || 3306;
 
+console.log('db', db);
 
 // app.get('/db', async (req, res) => {
 
@@ -87,10 +88,12 @@ const PORT = process.env.PORT || 3306;
 //   });  
 // });
 
+
+
 app.get('/db', (req, res) => {
 
   // Fetch users from the database
-  connection.query('SELECT * FROM users', (error, results) => {
+  db.query('SELECT * FROM users', (error, results) => {
     if (error) {
       console.error('Error fetching users from the database: ' + error.stack);
       return res.status(500).json({ error: 'Failed to fetch users' });
