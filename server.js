@@ -117,6 +117,9 @@ app.get('/db', async (req, res) => {
   
     console.log('results', results); // results contains rows returned by server
     console.log('fields', fields); // fields contains extra meta data about results, if available
+
+
+    res.json(results)
   } catch (err) {
     console.log(err);
   }
