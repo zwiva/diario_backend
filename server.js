@@ -1,11 +1,10 @@
-const express = require('express')
-// import express from 'express';
+import express from 'express';
 
-const cors = require('cors')
-// import cors from 'cors';
+import mysql from 'mysql2/promise';
 
-const mysql = require('mysql')
-// import mysql from 'mysql2';
+import cors from 'cors';
+
+
 
 // import { PORT as APP_PORT } from './src/config/config.js';
 
@@ -60,14 +59,20 @@ const credentials = {
 console.log('credentials', credentials);
 
 // const mysql = require('mysql2'); // or require('mysql2').createConnectionPromise
-const db = mysql.createConnection(credentials).connect(err => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err);
-    return;
-  }
-  console.log('Connected to MySQL xxxxx');
-}
-);
+// const db = mysql.createConnection(credentials).connect(err => {
+//   if (err) {
+//     console.error('Error connecting to MySQL:', err);
+//     return;
+//   }
+//   console.log('Connected to MySQL xxxxx');
+// }
+// );
+
+
+const connection = await mysql.createConnection(credentials);
+
+
+
 
 // Init
 // const PORT = process.env.PORT || APP_PORT;
@@ -90,20 +95,50 @@ console.log('db', db);
 
 
 
-app.get('/db', (req, res) => {
+app.get('/db', async (req, res) => {
 
-  // Fetch users from the database
-  db.query('SELECT * FROM users', (error, results) => {
-    if (error) {
-      console.error('Error fetching users from the database: ' + error.stack);
-      return res.status(500).json({ error: 'Failed to fetch users' });
-    }
-    console.log("results >>>>> ", results);
-    res.json(results);
+  // // Fetch users from the database
+  // db.query('SELECT * FROM users', (error, results) => {
+  //   if (error) {
+  //     console.error('Error fetching users from the database: ' + error.stack);
+  //     return res.status(500).json({ error: 'Failed to fetch users' });
+  //   }
+  //   console.log("results >>>>> ", results);
+  //   res.json(results);
 
-  });
+  // });
+
+
+
+  try {
+    const [results, fields] = await connection.query(
+      'SELECT * FROM users'
+    );
+  
+    console.log('results', results); // results contains rows returned by server
+    console.log('fields', fields); // fields contains extra meta data about results, if available
+  } catch (err) {
+    console.log(err);
+  }
+
+
 });
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 })
+
+
+
+
+
+
+
+
+// Get the client
+
+// Create the connection to database
+
+
+// A simple SELECT query
+
