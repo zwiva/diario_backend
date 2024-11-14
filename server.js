@@ -78,7 +78,7 @@ const connection = await mysql.createConnection(credentials);
 // const PORT = process.env.PORT || APP_PORT;
 const PORT = process.env.PORT || 3306;
 
-console.log('db', db);
+// console.log('db', db);
 
 // app.get('/db', async (req, res) => {
 
